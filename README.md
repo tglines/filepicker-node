@@ -7,7 +7,7 @@ Installation
 -------------
 
 ``` bash
-$ npm install filepicker
+$ npm install filepicker-node
 ```
 
 #### Instantiation
