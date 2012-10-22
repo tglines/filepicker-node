@@ -1,6 +1,7 @@
 // filepicker-node is a Node.js filepicker library
 
 var request = require('request');
+var http = require('http');
 
 var BASE_URL="https://www.filepicker.io";
 var endpoints = {};
@@ -11,6 +12,8 @@ function Filepicker(apiKey) {
   return this;
 }
 
+// read() - Retrieves a file as utf8 for now
+// Arguments: full filepicker file url, options not used for now and callback of (err,data)
 Filepicker.prototype.read = function(url, options, callback){
   var req_options = {
     host: 'www.filepicker.io',
@@ -19,11 +22,13 @@ Filepicker.prototype.read = function(url, options, callback){
     method: 'GET'
   }
   var req = http.request(req_options, function(res) {
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
     res.setEncoding('utf8');
+    body = '';
     res.on('data', function (chunk) {
-      console.log('BODY: ' + chunk);
+      body += chunk;
+    });
+    res.on('end', function () {
+      callback(null,body);
     });
   });
 
@@ -36,6 +41,8 @@ Filepicker.prototype.read = function(url, options, callback){
   req.end();
 }
 
+// store() - Stores a file to filepicker
+// Arguments: fileconents string, options {persist:true} and callback of (err,data) also an encoding flag
 Filepicker.prototype.store = function(fileContents, options, callback, noencode){
   if(typeof options === "function") {
     noencode = !!callback;
@@ -81,7 +88,7 @@ Filepicker.prototype.store = function(fileContents, options, callback, noencode)
     }
 
     if(returnJson.result == 'ok') {
-      returnData = returnJson.data[0];
+      returnData = returnJson.data;
       callback(null, returnData.url, returnData.data);
     } else if(returnJson.result == 'error') {
       callback(new Error(returnJson.msg));
