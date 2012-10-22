@@ -10,6 +10,9 @@
     "type": "git",
     "url": "git://github.com/tglines/filepicker-node.git"
   },
+  "dependencies":{
+    "request":"*"
+  },
   "keywords": [
     "filepicker"
   ],
