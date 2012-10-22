@@ -13,7 +13,7 @@ $ npm install filepicker
 #### Instantiation
 
 ``` javascript
-var Filepicker = require('filepicker');
+var Filepicker = require('filepicker-node');
 var filepicker = new Filepicker('YOUR_API_KEY');
 ```
 
